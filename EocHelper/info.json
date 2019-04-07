@@ -1,0 +1,29 @@
+{
+	"CMakeName":"EocHelper",
+	"Cmd":{
+		"到平台整数":{
+			"CppName":"e::lib::krnln::ToIntPtr",
+			"ReturnDataType":"intptr_t",
+			"Parameters":[
+				{
+					"DataType":"*",
+					"Optional":false,
+					"ByRef":false,
+					"VarArgs":false
+				}
+			]
+		}
+	},
+	"Type":{},
+	"Constant":{
+		"是否为EOC模式":{
+			"CppName":"e::lib::EocHelper::constant::IsEocMode",
+			"DataType":"bool"
+		},
+		"是否为64位模式":{
+			"CppName":"e::lib::EocHelper::constant::Is64bitMode",
+			"DataType":"bool"
+		}
+	},
+	"Enum":{}
+}
