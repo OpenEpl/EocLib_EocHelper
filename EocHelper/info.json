@@ -18,7 +18,8 @@
 	"Constant":{
 		"是否为EOC模式":{
 			"CppName":"e::lib::EocHelper::constant::IsEocMode",
-			"DataType":"bool"
+			"DataType":"bool",
+			"Value":true
 		},
 		"是否为64位模式":{
 			"CppName":"e::lib::EocHelper::constant::Is64bitMode",
