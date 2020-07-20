@@ -1,6 +1,3 @@
-// myelib.cpp : 定义 DLL 应用程序的导出函数。
-//
-
 #include "stdafx.h"
 #include "EocHelper.h"
 #include "elib/lib2.h"
@@ -112,6 +109,10 @@ EXTERN_C void EocHelper_ToIntPtr(PMDATA_INF pRetData, INT iArgCount, PMDATA_INF 
 	}
 };
 
+EXTERN_C void EOCAttribute_AutoParam(PMDATA_INF pRetData, INT iArgCount, PMDATA_INF pArgInf)
+{
+	return;
+}
 
 /*
 函数的实现都需要定义在宏的外面以便静态和动态库都能使用，但ExecuteCommand，Commands则只需定义在宏的里面供动态库使用。
@@ -125,21 +126,28 @@ pArgInf 函数参数指针
 #ifndef __E_STATIC_LIB
 PFN_EXECUTE_CMD ExecuteCommand[] =
 {
-	EocHelper_ToIntPtr // 所有需要库中调用的函数都列在这里，用逗号隔开
+	EocHelper_ToIntPtr, // 所有需要库中调用的函数都列在这里，用逗号隔开
+	EOCAttribute_AutoParam
 };
 static const char* const CommandNames[] =
 {
-	"EocHelper_ToIntPtr" // 所有需要库中调用的函数名都写在这里，用逗号隔开
+	"EocHelper_ToIntPtr", // 所有需要库中调用的函数名都写在这里，用逗号隔开
+	"EOCAttribute_AutoParam"
 };
-ARG_INFO CommandArgs[] =
+ARG_INFO ArgsInfo_ToIntPtr[] =
 {
 	/* { 参数名称, 参数描述, 图像索引, 图像数量, 参数类型(参见SDT_), 默认数值, 参数类别(参见AS_) } */
-	{ _WT("数据"), _WT("待转换的数据"), 0, 0, _SDT_ALL, NULL, NULL } //函数参数数组定义写在这里，每个{}为一个参数的表述，用逗号隔开
+	{ _WT("数据"), _WT("待转换的数据"), 0, 0, _SDT_ALL, NULL, NULL }
+};
+ARG_INFO ArgsInfo_EOCAttribute_AutoParam[] =
+{
+	{ _WT("参数"), _WT("待标记的子程序参数"), 0, 0, _SDT_ALL, NULL, NULL }
 };
 static CMD_INFO Commands[] =
 {
 	/* { 中文名称, 英文名称, 对象描述, 所属类别(-1是数据类型的方法), 命令状态(CT_), 返回类型(SDT_), 此值保留, 对象等级(LVL_), 图像索引, 图像数量, 参数个数, 参数信息 } */
-	{ _WT("到平台整数"), _WT("ToIntPtr"), _WT("类似 到整数/到长整数"), 1, NULL, 1, 0, LVL_HIGH, 0, 0, 1, CommandArgs },//基本命令
+	{ _WT("到平台整数"), _WT("ToIntPtr"), _WT("类似 到整数/到长整数"), 1, 0, 1, 0, LVL_HIGH, 0, 0, 1, ArgsInfo_ToIntPtr },
+	{ _WT("EOC标记_自适应参数"), _WT("EOCAttribute_AutoParam"), _WT("【必须放置在子程序开头】仅在非成员方法中可用，用于将参数标记为自适应（Auto）类型，非EOC程序自动忽略"), 1, CT_DISABLED_IN_RELEASE, _SDT_NULL, 0, LVL_HIGH, 0, 0, 1, ArgsInfo_EOCAttribute_AutoParam },
 };
 #endif
 
